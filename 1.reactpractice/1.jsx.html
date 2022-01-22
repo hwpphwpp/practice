@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <body>    
 <div id="root"></div>
 </body>
@@ -10,21 +9,19 @@
  
 <script type="text/babel">
     const root=document.getElementById("root");
-    function Title(){
-        return(<h3 id="title" onMouseEnter={()=>console.log("mouse enter")}>
-            Hello I'm a span
-            </h3>
+    function App(){
+        const [counter,setCounter]=React.useState(0);
+        const onClick=()=>{
+           setCounter(counter+1);
+        };
+        return( //브라우저에 그려질 Component
+            <div>
+            <h3>Total clicks:{counter}</h3>
+            <button onClick={onClick}>Click me!</button>
+            </div>
         );
     }
-        
-    const Btn=()=>(<button style={{backgroundColor:"tomato",}}  onClick={()=>console.log("i'm clicked")}
-        >
-        Click me 
-        </button>
-    );
-
-        const Container = <div><Title/><Btn/></div>;
-        ReactDOM.render(Container, root);
+        ReactDOM.render(<App/>, root);
 
 </script>
 
