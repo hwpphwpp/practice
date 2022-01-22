@@ -10,11 +10,12 @@
 <script type="text/babel">
     const root=document.getElementById("root");
     function App(){
-        const [counter,setCounter]=React.useState(0);
-        const onClick=()=>{
-           setCounter(counter+1);
+        const [counter,setCounter]=React.useState(0);   
+        const onClick=()=>{ 
+        //    setCounter(counter+1);
+           setCounter((current)=>current+1);
         };
-        return( //브라우저에 그려질 Component
+        return( 
             <div>
             <h3>Total clicks:{counter}</h3>
             <button onClick={onClick}>Click me!</button>
