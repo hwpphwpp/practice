@@ -8,8 +8,10 @@
 
  
 <script type="text/babel">
-    function Btn({banana}){
-        return <button
+    function Btn({banana, changeValue}){
+        console.log(banana+"was rendered");  
+        return ( <button
+        onClick={changeValue} //여기서 이 버튼이 changeValue라는 onClick리스너를 가지게 되는것 
         style={{
             backgroundColor:"tomato",
             color:"white",
@@ -18,13 +20,20 @@
             borderRadius:10,
         }}>
             {banana}
-        </button>;
+        </button>
+        );
     }
+
+    const MemorizedBtn=React.memo(Btn);
+
     function App(){
+        const [value,setValue] = React.useState("save changes");
+        const changeValue=()=>setValue("Revert changes");
+
        return(
            <div>
-            <Btn banana="Save Changes"/> 
-            <Btn banana="Continue"/>
+            <MemorizedBtn banana={value} changeValue={changeValue}/>  
+            <MemorizedBtn banana="Continue"/>
             </div>
        );
     }   
