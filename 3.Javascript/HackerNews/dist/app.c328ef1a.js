@@ -118,11 +118,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"app.js":[function(require,module,exports) {
+var NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
 var ajax = new XMLHttpRequest();
-ajax.open('GET', 'https://api.hnpwa.com/v0/news/1.json', false);
+ajax.open('GET', NEWS_URL, false);
 ajax.send();
 var newsFeed = JSON.parse(ajax.response);
-console.log(newsFeed);
+var ul = document.createElement('ul');
+
+for (var i = 0; i < 10; i++) {
+  var li = document.createElement('li');
+  li.innerHTML = newsFeed[i].title;
+  ul.appendChild(li);
+}
+
+document.getElementById('root').appendChild(ul);
 },{}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
