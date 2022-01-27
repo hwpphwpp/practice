@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import {useState } from "react";
+
 
 interface ContainerPops{
     bgColor:string;
@@ -20,6 +22,7 @@ interface CircleProps{
 }
 
 function Circle({bgColor, borderColor, text="default text"}:CircleProps){
+    const [value,setValue] = useState(0);
     return <Container bgColor={bgColor} borderColor={borderColor ?? bgColor}>
         {text}
         </Container>;
