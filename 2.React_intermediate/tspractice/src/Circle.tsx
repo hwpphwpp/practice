@@ -1,4 +1,5 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import {useState} from "react";
 
 interface ContainerProps{ //objet를 설명하고, 보호한다
     bgColor:string;
@@ -20,6 +21,7 @@ interface CircleProps {
 }
 
 function Circle({bgColor, borderColor,text="default text"} :CircleProps){//borderColor가 undefined일 때 byColor와 같은값을 가진다
+    const [value,setValue]=useState(0);
     return<Container bgColor={bgColor} borderColor={borderColor ?? bgColor}>
         {text}
     </Container>;
