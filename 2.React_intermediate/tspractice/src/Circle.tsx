@@ -1,31 +1,22 @@
-import styled from "styled-components";
-import {useState } from "react";
+import styled from "styled-components"
 
-
-interface ContainerPops{
+interface ContainerProps{ //objet를 설명하고, 보호한다
     bgColor:string;
-    borderColor:string;
 }
 
-const Container=styled.div<ContainerPops>`
+const Container = styled.div<ContainerProps>`
     width:200px;
     height:200px;
-    background-color:${(props)=>props.bgColor};
+    background-color: ${(props)=>props.bgColor};
     border-radius:100px;
-    border:2px solid ${props=>props.borderColor};
 `;
 
-interface CircleProps{
+interface CircleProps {
     bgColor:string;
-    borderColor?: string;
-    text?:string;
 }
 
-function Circle({bgColor, borderColor, text="default text"}:CircleProps){
-    const [value,setValue] = useState(0);
-    return <Container bgColor={bgColor} borderColor={borderColor ?? bgColor}>
-        {text}
-        </Container>;
+function Circle({bgColor}:CircleProps){
+    return<Container bgColor={bgColor}/>;
 }
 
 export default Circle;
