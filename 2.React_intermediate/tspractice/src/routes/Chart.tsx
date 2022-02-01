@@ -46,7 +46,17 @@ function Chart({coinId}:ChartProps){
             width:3,
         },
         yaxis:{show:false,},
-        xaxis:{labels:{show:false},},
+        xaxis:{labels:{show:false},
+        type:"datetime",
+                categories:data?.map((price)=>price.time_close)
+          },
+          fill:{type:"gradient", gradient:{gradientToColors:["blue"]},},
+          colors:["red"],
+          tooltip:{
+              y:{
+                  formatter:(value)=>`$ ${value.toFixed(2)}`,
+              }
+          }
     }}/>}</div>
 }
 
