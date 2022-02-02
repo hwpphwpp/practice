@@ -65,7 +65,10 @@ interface ICoin {
   type: string;
 }
 
-function Coins() {
+interface ICoinsProps{
+}
+
+function Coins({}:ICoinsProps) {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
   return (
     <Container>
@@ -73,7 +76,7 @@ function Coins() {
         <title>코인</title> 
       </Helmet>
       <Header>
-        <Title>코인</Title>
+        <Title>코인</Title> 
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>

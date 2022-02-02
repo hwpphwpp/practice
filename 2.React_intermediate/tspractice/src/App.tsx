@@ -4,7 +4,8 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { ThemeProvider } from "styled-components";
 import {lightTheme, darkTheme} from "./theme"; 
 import { useState } from "react";
-
+import {useRecoilValue} from "recoil";
+import {isDarkAtom} from "./atoms";
 
 //기본값 제거
 const GlobalStyle = createGlobalStyle` 
@@ -70,13 +71,11 @@ a{
 }
 `;
 
-function App() {
-  const [isDark, setIsDark]=useState(false);
-  const toggleDark = () =>setIsDark((current)=>!current);
+function App() {  
+  const isDark= useRecoilValue(isDarkAtom);
   return (
     <>
      <ThemeProvider theme={isDark ? darkTheme : lightTheme}> 
-      <button onClick={toggleDark}>Toggle Mode</button>
         <GlobalStyle/>
           <Router/> 
         <ReactQueryDevtools initialIsOpen={true} />
