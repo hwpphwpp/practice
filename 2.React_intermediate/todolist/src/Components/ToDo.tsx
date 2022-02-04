@@ -8,8 +8,17 @@ function ToDo({ text, category, id }: IToDo) {
     const {
       currentTarget: { name },
     } = event;
-    
-    console.log("iwantto", event.currentTarget.name);
+    setToDos(oldToDos=>{
+        const targetIndex=oldToDos.findIndex(toDo=>toDo.id===id) //조건을 만족하는 index를 찾아옴. toDo의 id와 props에서 오는 id가 같은지 비교
+        const oldToDo=oldToDos[targetIndex];
+        const newToDo={text, id, category:name}; //caterogy는 props에서 온 것을 그대로 쓸 수 없고 클릭된 button의 카테고리를 가져옴
+        console.log(
+            "replace the to do in the index",
+            targetIndex,
+            "with",
+            newToDo);
+        return oldToDos;
+    })
 
 };
   return (
