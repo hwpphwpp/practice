@@ -12,6 +12,11 @@ export interface IToDo{
     category:"TO_DO"|"DOING"|"DONE";
   }
   
+export const categoryState=atom({
+  key:"category",
+  default:"TO_DO",
+});
+
 export const toDoSelector = selector({
   key:"toDoSelector",
   get:({get})=>{//get function으로 atom을 받는다
