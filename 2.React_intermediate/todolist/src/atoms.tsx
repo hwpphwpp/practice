@@ -12,19 +12,17 @@ export interface IToDo{
     category:"TO_DO"|"DOING"|"DONE";
   }
   
-export const categoryState=atom({
+export const categoryState=atom({ //사용자가 현재 선택한 카테고리 
   key:"category",
   default:"TO_DO",
 });
 
+
 export const toDoSelector = selector({
-  key:"toDoSelector",
-  get:({get})=>{//get function으로 atom을 받는다
-    const toDos=get(toDoState);
-    return [
-      toDos.filter((toDo)=>toDo.category==="TO_DO"),//카테고리TO_DO만 필터링하여 배열에 담기
-      toDos.filter((toDo)=>toDo.category==="DOING"),
-      toDos.filter((toDo)=>toDo.category==="DONE"),
-  ]  
-  }
-})
+  key: "toDoSelector",
+  get: ({ get }) => {
+    const toDos = get(toDoState);
+    const category = get(categoryState);
+    return toDos.filter((toDo) => toDo.category === category);
+  },
+});

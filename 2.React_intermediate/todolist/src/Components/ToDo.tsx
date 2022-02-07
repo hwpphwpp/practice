@@ -19,7 +19,6 @@ function ToDo({ text, category, id }: IToDo) { //todo의 타입은 이미 만들
 };
   return (
     <li>
-      {/* text props */}
       <span>{text}</span>
       {category !== "DOING" && (
         <button name="DOING" onClick={onClick}>
