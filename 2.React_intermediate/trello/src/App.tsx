@@ -37,9 +37,9 @@ const Card = styled.div`
 const toDos = ["a", "b", "c", "d", "e", "f"];
 
 function App() {
-  const [toDos, setToDos]=useRecoilState(toDoState);
+  const [toDos, setToDos]=useRecoilState(toDoState); 
   const onDragEnd = ({ destination, source}:DropResult) => {
-    
+
 
   };
   return (
