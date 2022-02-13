@@ -26,6 +26,7 @@ function App() {
   const onDragEnd = (info: DropResult) => {
     console.log(info);
     const { destination, draggableId, source } = info;
+    if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
       // same board movement.
       setToDos((allBoards) => {
@@ -38,6 +39,22 @@ function App() {
         };
       });
     }
+
+    if(destination.droppableId !==source.droppableId){
+      //cross board movement 
+      setToDos((allBoards)=>{
+        const sourceBoard = [...allBoards[source.droppableId]];//이동 시작점 board ID 겟 
+        const destinationBoard = [...allBoards[destination.droppableId]]; //움직임의 끝나는 board ID 
+        sourceBoard.splice(source.index,1);
+        destinationBoard.splice(destination?.index, 0, draggableId);
+        return {
+          ...allBoards,
+          [source.droppableId]:sourceBoard,
+          [destination.droppableId]:destinationBoard,
+        };
+      });
+    }
+
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
