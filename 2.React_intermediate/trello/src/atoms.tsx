@@ -1,6 +1,15 @@
 import { atom, selector } from "recoil";
 
-export const toDoState = atom ({
+interface IToDoState {
+    [key: string]:string[];
+}
+
+export const toDoState = atom<IToDoState>({
     key:"toDo",
-    default: ["a", "b", "c", "d", "e", "f"],
+    default: { //object는 각각의 보드가 가질 id를 포함
+        to_do:["a", "b", "c", "d", "e", "f"],
+        doing: [],
+        done:[], 
+
+    },
 })
