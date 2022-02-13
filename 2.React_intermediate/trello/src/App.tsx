@@ -1,14 +1,12 @@
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
-import DragabbleCard from "./Components/DragabbleCard";
 import Board from "./Components/Board";
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 680px;
-  width: 100%;
+  width: 100vw;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -16,37 +14,38 @@ const Wrapper = styled.div`
 `;
 
 const Boards = styled.div`
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
-  gap:10px;
-  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 `;
- 
- 
-
-const toDos = ["a", "b", "c", "d", "e", "f"];
 
 function App() {
-  const [toDos, setToDos]=useRecoilState(toDoState); 
-  const onDragEnd = ({ draggableId, destination, source}:DropResult) => {
-    //source: array에서 움직이고 싶은 item의 index, droppableId 제공
-    //새롭게 수정된 배열 return해줌
-    // if(!destination) return; //이동하지 않고 제자리에 둘 경우 그대로 리턴 
-    // setToDos(oldToDos=>{
-    //   const copyToDos = [...oldToDos]; //이전의 배열 copy (복사본 만들기)
-    //   //step1. source.index에서 아이템 삭제하기 
-    //   copyToDos.splice(source.index, 1)
-    //   //step2. destination.index로 item 돌려두기
-    //   copyToDos.splice(destination?.index, 0, draggableId) //draggableId=abcd..
-    //   return copyToDos;
-    // })
-
+  const [toDos, setToDos] = useRecoilState(toDoState);
+  const onDragEnd = (info: DropResult) => {
+    console.log(info);
+    const { destination, draggableId, source } = info;
+    if (destination?.droppableId === source.droppableId) {
+      // same board movement.
+      setToDos((allBoards) => {
+        const boardCopy = [...allBoards[source.droppableId]];
+        boardCopy.splice(source.index, 1);
+        boardCopy.splice(destination?.index, 0, draggableId);
+        return {
+          ...allBoards,
+          [source.droppableId]: boardCopy,
+        };
+      });
+    }
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
         <Boards>
-          {Object.keys(toDos).map(boardId=> <Board boardId={boardId} key={boardId} toDos={toDos[boardId]}/>)}
+          {Object.keys(toDos).map((boardId) => (
+            <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
+          ))}
         </Boards>
       </Wrapper>
     </DragDropContext>
