@@ -17,14 +17,14 @@ const Box = styled(motion.div)`
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
+const myVars = { //초기, 최종 두 개의 stage(상태)를 가진다
+ start: { scale:0 }, 
+ end : {scale:1, rotateZ:360, transition:{type:"spring", delay:0.5} }
+}
 function App() {
   return (
     <Wrapper>
-      <Box 
-      initial={{ scale:0 }} 
-      animate={{ scale:1, rotateZ:360}}
-      transition={{type:"spring", delay:0.1 }}/> 
-      {/* 기본은 spring(약간의 반동) */}
+      <Box variants={myVars} initial="start" animate="end"/>
     </Wrapper>
   );
 }
