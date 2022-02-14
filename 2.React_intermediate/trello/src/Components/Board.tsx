@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import DragabbleCard from "./DragabbleCard";
@@ -10,6 +11,7 @@ const Wrapper = styled.div`
   min-height: 300px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const Title = styled.h2`
@@ -20,15 +22,17 @@ const Title = styled.h2`
 `;
 
 interface IAreaProps {
-  isDraggingFromThis: boolean; //드래그해서 떠나는 보드
-  isDraggingOver: boolean; //드래그해서 도착하는 보드
+  isDraggingFromThis: boolean;
+  isDraggingOver: boolean;
 }
 
-// Area는 해당 < > prop을 받는다
-// drag해서 보드위에 올라온다면 배경색을 변경한다 
-const Area = styled.div<IAreaProps>` 
+const Area = styled.div<IAreaProps>`
   background-color: ${(props) =>
-    props.isDraggingOver ? "#dfe6e9" : props.isDraggingFromThis ? "#b2bec3" : "transparent"};
+    props.isDraggingOver
+      ? "#dfe6e9"
+      : props.isDraggingFromThis
+      ? "#b2bec3"
+      : "transparent"};
   flex-grow: 1;
   transition: background-color 0.3s ease-in-out;
   padding: 20px;
@@ -40,9 +44,18 @@ interface IBoardProps {
 }
 
 function Board({ toDos, boardId }: IBoardProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const onClick = () => {
+    inputRef.current?.focus();
+    setTimeout(() => {
+      inputRef.current?.blur();
+    }, 5000);
+  };
   return (
     <Wrapper>
       <Title>{boardId}</Title>
+      <input ref={inputRef} placeholder="grab me" />
+      <button onClick={onClick}>click me</button>
       <Droppable droppableId={boardId}>
         {(magic, info) => (
           <Area
