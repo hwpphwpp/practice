@@ -24,7 +24,6 @@ const Boards = styled.div`
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = (info: DropResult) => {
-    console.log(info);
     const { destination, draggableId, source } = info;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
@@ -39,22 +38,20 @@ function App() {
         };
       });
     }
-
-    if(destination.droppableId !==source.droppableId){
-      //cross board movement 
-      setToDos((allBoards)=>{
-        const sourceBoard = [...allBoards[source.droppableId]];//이동 시작점 board ID 겟 
-        const destinationBoard = [...allBoards[destination.droppableId]]; //움직임의 끝나는 board ID 
-        sourceBoard.splice(source.index,1);
+    if (destination.droppableId !== source.droppableId) {
+      // cross board movement
+      setToDos((allBoards) => {
+        const sourceBoard = [...allBoards[source.droppableId]];
+        const destinationBoard = [...allBoards[destination.droppableId]];
+        sourceBoard.splice(source.index, 1);
         destinationBoard.splice(destination?.index, 0, draggableId);
         return {
           ...allBoards,
-          [source.droppableId]:sourceBoard,
-          [destination.droppableId]:destinationBoard,
+          [source.droppableId]: sourceBoard,
+          [destination.droppableId]: destinationBoard,
         };
       });
     }
-
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
