@@ -59,12 +59,24 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
   height: 200px;
   font-size: 66px;
 
-  &:first-child{
+  &:first-child {
     transform-origin: center left;
   }
+  &:last-child {
+    transform-origin: center right;
+  }
+`;
 
-  &:last-child{
-    transform-origin:center right;
+const Info = styled(motion.div)`
+  padding: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  h4 {
+    text-align: center;
+    font-size: 18px;
   }
 `;
 
@@ -86,10 +98,21 @@ const boxVariants = {
   },
   hover: {
     scale: 1.3,
-    y: -50,
+    y: -80,
     transition: {
       delay: 0.5,
-      duaration: 0.3,
+      duaration: 0.1,
+      type: "tween",
+    },
+  },
+};
+
+const infoVariants = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      duaration: 0.1,
       type: "tween",
     },
   },
@@ -108,12 +131,12 @@ function Home() {
     if (data) {
       if (leaving) return;
       toggleLeaving();
-      const totalMovies = data.results.length - 1; //이미 포스터에 사용한 영화 제외 
+      const totalMovies = data.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1)); //증가시키기 전에 확인거침
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
-  const toggleLeaving = () => setLeaving((prev) => !prev); 
+  const toggleLeaving = () => setLeaving((prev) => !prev);
   return (
     <Wrapper>
       {isLoading ? (
@@ -148,7 +171,11 @@ function Home() {
                       variants={boxVariants}
                       transition={{ type: "tween" }}
                       bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                    />
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
                   ))}
               </Row>
             </AnimatePresence>
