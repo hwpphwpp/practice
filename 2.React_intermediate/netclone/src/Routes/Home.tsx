@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const Wrapper = styled.div`
   background: black;
+  padding-bottom: 200px;
 `;
 
 const Loader = styled.div`
@@ -32,7 +33,7 @@ const Title = styled.h2`
   margin-bottom: 20px; ;
 `;
 
-const Overview = styled.p`  
+const Overview = styled.p`
   font-size: 30px;
   width: 50%;
 `;
@@ -50,10 +51,12 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)`
+const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
+  background-image: url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center center;
   height: 200px;
-  color: red;
   font-size: 66px;
 `;
 
@@ -69,20 +72,25 @@ const rowVariants = {
   },
 };
 
+const offset = 6;
+
 function Home() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
     getMovies
   );
   const [index, setIndex] = useState(0);
-  const [leaving, setLeaving]=useState(false);
+  const [leaving, setLeaving] = useState(false);
   const incraseIndex = () => {
-    if(leaving) return;
-    toggleLeaving();
-    setIndex((prev) => prev + 1);
+    if (data) {
+      if (leaving) return;
+      toggleLeaving();
+      const totalMovies = data.results.length - 1; //이미 포스터에 사용한 영화 제외 
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1)); //증가시키기 전에 확인거침
+    }
   };
-  const toggleLeaving = () => setLeaving((prev)=>!prev);
-
+  const toggleLeaving = () => setLeaving((prev) => !prev); 
   return (
     <Wrapper>
       {isLoading ? (
@@ -106,9 +114,15 @@ function Home() {
                 transition={{ type: "tween", duration: 1 }}
                 key={index}
               >
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <Box key={i}>{i}</Box>
-                ))}
+                {data?.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map((movie) => (
+                    <Box
+                      key={movie.id}
+                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")} //사이즈조절
+                    />
+                  ))}
               </Row>
             </AnimatePresence>
           </Slider>
