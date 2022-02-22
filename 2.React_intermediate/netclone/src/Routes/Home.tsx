@@ -162,8 +162,8 @@ const infoVariants = {
   },
 };
 
-const offset = 6;
-
+const offset = 6; 
+ 
 function Home() {
   const history = useHistory();
   const bigMovieMatch = useRouteMatch<{ movieId: string }>("/movies/:movieId");
