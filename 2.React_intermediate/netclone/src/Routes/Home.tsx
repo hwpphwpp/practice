@@ -106,15 +106,15 @@ const BigCover = styled.div`
   width: 100%;
   background-size: cover;
   background-position: center center;
-  height: 400px;
+  height: 400px; 
 `;
 
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
-  font-size: 46px;
+  padding: 20px; 
   position: relative;
-  top: -80px;
+  top: -80px; 
+  font-size:46px;
 `;
 
 const BigOverview = styled.p`
