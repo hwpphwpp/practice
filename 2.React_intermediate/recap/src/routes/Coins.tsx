@@ -41,6 +41,11 @@ const Loader = styled.span`
   text-align: center;
   display: block;
 `;
+const Img = styled.img`
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+`;
 
 interface CoinInterface {
   id: string;
@@ -75,7 +80,11 @@ function Coins() {
         <CoinsList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
+              <Link to={`/${coin.id}`}>
+              <Img
+                  src={`https://cryptoicon-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                />
+              {coin.name} &rarr;</Link>
             </Coin>
           ))}
         </CoinsList>
