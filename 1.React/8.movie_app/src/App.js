@@ -7,7 +7,7 @@ function App() {
  return (
  <Router>
    <Switch>
-     <Route path="/movie/:id"> //router에 url이 변수를 받을 것이다라고 명시
+     <Route path="/movie/:id">
         <Detail/> 
       </Route>
      <Route path="/">
