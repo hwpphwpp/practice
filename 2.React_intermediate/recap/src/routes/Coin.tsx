@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import {
   Switch,
   Route,
@@ -142,7 +141,9 @@ interface PriceData {
   };
 }
 
-function Coin() {
+interface ICoinProps {}
+
+function Coin({}: ICoinProps) {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price");
@@ -153,8 +154,9 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId),{
-      refetchInterval:5000, //이 쿼리를 5초에 한번씩 refetch
+    () => fetchCoinTickers(coinId),
+    {
+      refetchInterval: 5000,
     }
   );
   const loading = infoLoading || tickersLoading;
@@ -162,7 +164,7 @@ function Coin() {
     <Container>
       <Helmet>
         <title>
-        {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </title>
       </Helmet>
       <Header>
@@ -185,7 +187,7 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Price:</span>
-              <span>{tickersData?.quotes.USD.price.toFixed(2)}</span>
+              <span>${tickersData?.quotes?.USD?.price?.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -218,7 +220,7 @@ function Coin() {
             </Route>
           </Switch>
         </>
-      )} 
+      )}
     </Container>
   );
 }
