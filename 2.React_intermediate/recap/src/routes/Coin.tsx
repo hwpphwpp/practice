@@ -143,10 +143,13 @@ function Coin() {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
   const [loading, setLoading] = useState(true);
+
   const [info, setInfo] = useState<InfoData>();
   const [priceInfo, setPriceInfo] = useState<PriceData>();
+
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
+
   useEffect(() => {
     (async () => {
       const infoData = await (
@@ -162,11 +165,13 @@ function Coin() {
   }, [coinId]);
   return (
     <Container>
+
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : info?.name}
         </Title>
       </Header>
+      
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
