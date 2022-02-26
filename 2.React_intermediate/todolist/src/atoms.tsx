@@ -33,4 +33,4 @@ export const toDoSelector = selector({
     const category = get(categoryState);
     return toDos.filter((toDo) => toDo.category === category);
   },
-});
+});  
