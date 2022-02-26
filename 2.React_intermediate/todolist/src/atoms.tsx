@@ -28,8 +28,8 @@ export const categoryState=atom<Categories>({ //사용자가 현재 선택한 �
 
 export const toDoSelector = selector({
   key: "toDoSelector",
-  get: ({ get }) => {
-    const toDos = get(toDoState);
+  get: ({ get }) => {//get function으로 atom을 받는다
+    const toDos = get(toDoState);//모든toDo받기 
     const category = get(categoryState);
     return toDos.filter((toDo) => toDo.category === category);
   },

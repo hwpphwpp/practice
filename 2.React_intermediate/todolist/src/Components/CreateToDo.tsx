@@ -10,15 +10,15 @@ function CreateToDo() {
   const setToDos = useSetRecoilState(toDoState); 
   const category=useRecoilValue(categoryState); //현재 카테고리 상태 가졍괴 
   const { register, handleSubmit, setValue } = useForm<IForm>();
-  const handleValid = ({ toDo }: IForm) => {
-    setToDos((oldToDos) => [
+  const onValid = ({ toDo }: IForm) => {
+    setToDos((x) => [
       { text: toDo, id: Date.now(), category: category },//새로운todo 배열에 추가
-      ...oldToDos,
+      ...x,
     ]);
     setValue("toDo", "");
   };
   return (
-    <form onSubmit={handleSubmit(handleValid)}>
+    <form onSubmit={handleSubmit(onValid)}>
       <input
         {...register("toDo", {
           required: "Please write a To Do",
