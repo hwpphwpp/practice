@@ -5,7 +5,7 @@ import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 
 function ToDoList() {
-  const toDos = useRecoilValue(toDoSelector); //한 개의 배열만 렌더
+  const toDos = useRecoilValue(toDoSelector); //한 개의 배열만  렌더
   const [category, setCategory] = useRecoilState(categoryState);
   const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
     setCategory(event.currentTarget.value as any);
@@ -21,9 +21,11 @@ function ToDoList() {
         <option value={Categories.DONE}>Done</option>
       </select>
       <CreateToDo />
+
       {toDos?.map((toDo) => (
         <ToDo key={toDo.id} {...toDo} />
       ))}
+      
     </div>
   );
 }
