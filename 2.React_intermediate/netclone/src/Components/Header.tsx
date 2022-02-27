@@ -16,10 +16,7 @@ const Nav = styled(motion.nav)`
   color: white;
 `;
 
-const Col = styled.div`
-  display: flex;
-  align-items: center;
-`;
+ 
 
 const Logo = styled(motion.svg)`
   margin-right: 50px;
@@ -32,11 +29,10 @@ const Logo = styled(motion.svg)`
   }
 `;
 
-const Items = styled.ul`
+const Col = styled.div`
   display: flex;
   align-items: center;
-`;
-
+`; 
 const Item = styled.li`
   margin-right: 20px;
   color: ${(props) => props.theme.white.darker};
@@ -48,6 +44,11 @@ const Item = styled.li`
   &:hover {
     color: ${(props) => props.theme.white.lighter};
   }
+`;
+
+const Items = styled.ul`
+  display: flex;
+  align-items: center;
 `;
 
 const Search = styled.form`
