@@ -1,9 +1,15 @@
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
+
+interface RouteParams {
+  movieId: string;
+}
 
 function Search() {
-  const location = useLocation();
+  const location = useLocation(); //현재 위치한 곳의 정보를 얻는다.
+  console.log(location);
   const keyword = new URLSearchParams(location.search).get("keyword");
-  console.log(keyword);
-  return null;
+  const {movieId}=useParams<RouteParams>(); 
+  console.log(movieId);
+  return <h1>keyword</h1>;
 }
 export default Search;

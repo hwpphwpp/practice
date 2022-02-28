@@ -9,6 +9,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 const Wrapper = styled.div`
   background: black;
   padding-bottom: 200px;
+  height:300vh;
 `;
 
 const Loader = styled.div`
@@ -40,8 +41,12 @@ const Overview = styled.p`
 `;
 
 const Slider = styled.div`
-  position: relative;
-  top: -100px;
+  position: relative; 
+  top:100px;
+`;
+
+const SliderOne=styled(Slider)`
+  top:400px;
 `;
 
 const Row = styled(motion.div)`
@@ -204,6 +209,7 @@ function Home() {
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[0].overview}</Overview>
           </Banner>
+
           <Slider>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
@@ -236,6 +242,40 @@ function Home() {
               </Row>
             </AnimatePresence>
           </Slider>
+
+
+          <SliderOne>
+            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+              <Row
+                variants={rowVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ type: "tween", duration: 1 }}
+                key={index}
+              >
+                {data?.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map((movie) => (
+                    <Box
+                      layoutId={movie.id + ""}
+                      key={movie.id}
+                      whileHover="hover"
+                      initial="normal"
+                      variants={boxVariants}
+                      onClick={() => onBoxClicked(movie.id)}
+                      transition={{ type: "tween" }}
+                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
+                  ))}
+              </Row>
+            </AnimatePresence>
+          </SliderOne>
           <AnimatePresence>
             {bigMovieMatch ? (
               <>
