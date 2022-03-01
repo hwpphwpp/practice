@@ -173,10 +173,9 @@ function Home() {
   const history = useHistory();
   const bigMovieMatch = useRouteMatch<{ movieId: string }>("/movies/:movieId");
   const { scrollY } = useViewportScroll();
-  const { data, isLoading } = useQuery<IGetMoviesResult>(
-    ["movies", "nowPlaying"],
-    getMovies
-  );
+  const { data, isLoading } = useQuery<IGetMoviesResult>( ["movies", "nowPlaying"],getMovies);
+
+
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const incraseIndex = () => {
@@ -196,6 +195,9 @@ function Home() {
   const clickedMovie =
     bigMovieMatch?.params.movieId &&
     data?.results.find((movie) => movie.id === +bigMovieMatch.params.movieId);
+
+
+    
   return (
     <Wrapper>
       {isLoading ? (
@@ -210,7 +212,7 @@ function Home() {
             <Overview>{data?.results[0].overview}</Overview>
           </Banner>
 
-          <Slider>
+          <Slider><h3>Now Playing...</h3>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
                 variants={rowVariants}
@@ -244,7 +246,7 @@ function Home() {
           </Slider>
 
 
-          <SliderOne>
+          <SliderOne><h3>Popular</h3>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
                 variants={rowVariants}
