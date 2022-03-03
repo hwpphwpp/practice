@@ -118,11 +118,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"app.js":[function(require,module,exports) {
+var container = document.getElementById('root');
 var ajax = new XMLHttpRequest(); //elementbyid로 div를 셀렉했던 것처럼 출력 결과를 돌려준다. 
 //반환하는 값을 저장할 저장소가 필요함 -> let ajax 에 담음 (변수)
 //ajax를 통해 xmlhttprequest가 제공하는 도구들을 사용할 수 있게됨 
 
+var content = document.createElement('div');
 var NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
+var CONTENT_URL = 'https://api.hnpwa.com/v0/item/@id.json';
 ajax.open('GET', NEWS_URL, false); //(method,url,async(false-동기적))
 //open은 데이터를 가져온 것이 아니고 실제로 데이터를 가져오는 것은 ajax가 제공하는 send 함수를 호출할 때 
 
@@ -139,14 +142,30 @@ var newsFeed = JSON.parse(ajax.response); //parse함수는 괄호 안에 입력�
 
 var ul = document.createElement('ul'); //document는 html을 조작하는데 필요한 모든 도구를 제공 
 
-for (var i = 0; i < 10; i++) {
-  var li = document.createElement('li'); //매번 새로 만들어지니까 for문 안에서 만들어야함 
+window.addEventListener('hashchange', function () {
+  var id = location.hash.substr(1); //#을빼고 id값만 가져오려고 
 
-  li.innerHTML = newsFeed[i].title;
-  ul.appendChild(li);
+  ajax.open('GET', CONTENT_URL.replace('@id', id), false); //@id를 위의 #값을뺀 id로바꿈
+
+  ajax.send();
+  var newsContent = JSON.parse(ajax.response);
+  var title = document.createElement('h1');
+  title.innerHTML = newsContent.title; //title의 내용은 newsContent로 가져온 곳에서 가져오면됨
+
+  content.appendChild(title);
+});
+
+for (var i = 0; i < 10; i++) {
+  var div = document.createElement('div');
+  var li = document.createElement('li');
+  var a = document.createElement('a'); //매번 새로 만들어지니까 for문 안에서 만들어야함 
+
+  div.innerHTML = "\n\n<li>\n\t<a href=\"#".concat(newsFeed[i].id, "\">\n    ").concat(newsFeed[i].title, " (").concat(newsFeed[i].comments_count, ")</a>\n</li>\n");
+  ul.appendChild(div.firstElementChild); //div의 첫번째 자식 li를 ul에 append
 }
 
-document.getElementById('root').appendChild(ul);
+container.appendChild(ul);
+container.appendChild(content);
 },{}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -175,7 +194,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56781" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54001" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

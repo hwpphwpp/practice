@@ -1,7 +1,10 @@
+const container=document.getElementById('root');
 const ajax=new XMLHttpRequest(); //elementbyid로 div를 셀렉했던 것처럼 출력 결과를 돌려준다. 
                         //반환하는 값을 저장할 저장소가 필요함 -> let ajax 에 담음 (변수)
                         //ajax를 통해 xmlhttprequest가 제공하는 도구들을 사용할 수 있게됨 
+const content=document.createElement('div');
 const NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
+const CONTENT_URL ='https://api.hnpwa.com/v0/item/@id.json';
 ajax.open('GET',NEWS_URL,false); //(method,url,async(false-동기적))
 //open은 데이터를 가져온 것이 아니고 실제로 데이터를 가져오는 것은 ajax가 제공하는 send 함수를 호출할 때 
 ajax.send(); 
@@ -21,11 +24,31 @@ const newsFeed = JSON.parse(ajax.response); //parse함수는 괄호 안에 입�
 //문자열 만드는 방식 : 백틱 ( `` ) 사이에 만들고자하는 문자열을 넣어주면 됨 
 
 const ul = document.createElement('ul'); //document는 html을 조작하는데 필요한 모든 도구를 제공 
+
+window.addEventListener('hashchange',function(){
+    const id=location.hash.substr(1) //#을빼고 id값만 가져오려고 
+    ajax.open('GET',CONTENT_URL.replace('@id',id),false); //@id를 위의 #값을뺀 id로바꿈
+    ajax.send();
+    
+    const newsContent=JSON.parse(ajax.response);
+    const title=document.createElement('h1');
+    title.innerHTML=newsContent.title;//title의 내용은 newsContent로 가져온 곳에서 가져오면됨
+    content.appendChild(title);    });
+
 for(let i=0; i<10; i++){ 
+    const div=document.createElement('div');
     const li=document.createElement('li');
+    const a = document.createElement('a');
     //매번 새로 만들어지니까 for문 안에서 만들어야함 
-    li.innerHTML=newsFeed[i].title;
-     ul.appendChild(li);
+    div.innerHTML = `
+
+<li>
+	<a href="#${newsFeed[i].id}">
+    ${newsFeed[i].title} (${newsFeed[i].comments_count})</a>
+</li>
+` 
+ul.appendChild(div.firstElementChild); //div의 첫번째 자식 li를 ul에 append
 }
 
-document.getElementById('root').appendChild(ul);
+container.appendChild(ul);
+container.appendChild(content);
