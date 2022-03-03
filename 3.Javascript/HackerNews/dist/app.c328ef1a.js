@@ -119,36 +119,33 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   return newRequire;
 })({"app.js":[function(require,module,exports) {
 var container = document.getElementById('root');
-var content = document.createElement('div'); //1.데이터 받아오기
-
+var content = document.createElement('div');
 var ajax = new XMLHttpRequest();
 var NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
 var CONTENT_URL = 'https://api.hnpwa.com/v0/item/@id.json';
-ajax.open('GET', NEWS_URL, false);
-ajax.send();
-var newsFeed = JSON.parse(ajax.response);
-var ul = document.createElement('ul'); //2.이벤트 달기
+
+function getData(url) {
+  ajax.open('GET', url, false);
+  ajax.send();
+  return JSON.parse(ajax.response);
+}
 
 window.addEventListener('hashchange', function () {
-  var id = location.hash.substr(1); //#을빼고 id값만 가져오려고 
-
-  ajax.open('GET', CONTENT_URL.replace('@id', id), false); //@id를 위의 #값을뺀 id로바꿈
-
-  ajax.send();
-  var newsContent = JSON.parse(ajax.response);
+  var id = location.hash.substr(1);
+  var newsContent = getData(CONTENT_URL.replace('@id', id));
   var title = document.createElement('h1');
-  title.innerHTML = newsContent.title; //title의 내용은 newsContent로 가져온 곳에서 가져오면됨
-
+  title.innerHTML = newsContent.title;
   content.appendChild(title);
-}); //3.UI 
+});
+var newsFeed = getData(NEWS_URL);
+var ul = document.createElement('ul');
 
 for (var i = 0; i < 10; i++) {
   var div = document.createElement('div');
   var li = document.createElement('li');
-  var a = document.createElement('a'); //매번 새로 만들어지니까 for문 안에서 만들어야함 
-
-  div.innerHTML = "\n                    <li>\n                        <a href=\"#".concat(newsFeed[i].id, "\">\n                        ").concat(newsFeed[i].title, " (").concat(newsFeed[i].comments_count, ")</a>\n                    </li>\n                    ");
-  ul.appendChild(div.firstElementChild); //div의 첫번째 자식 li를 ul에 append
+  var a = document.createElement('a');
+  div.innerHTML = "\n        <li>\n            <a href=\"#".concat(newsFeed[i].id, "\">\n            ").concat(newsFeed[i].title, " [").concat(newsFeed[i].comments_count, "</a>\n        </li>\n    ");
+  ul.appendChild(div.firstElementChild);
 }
 
 container.appendChild(ul);
