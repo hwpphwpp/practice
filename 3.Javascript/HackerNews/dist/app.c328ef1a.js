@@ -124,13 +124,22 @@ var ajax = new XMLHttpRequest();
 var NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
 var CONTENT_URL = 'https://api.hnpwa.com/v0/item/@id.json';
 
+function router() {
+  var routePath = location.hash;
+
+  if (routePath === '') {
+    // home
+    newsFeed();
+  } else {
+    newsDetail();
+  }
+}
+
 function getData(url) {
   ajax.open('GET', url, false);
   ajax.send();
   return JSON.parse(ajax.response);
 }
-
-var ul = document.createElement('ul');
 
 function newsFeed() {
   var newsFeed = getData(NEWS_URL); //데이터 가져오기
@@ -149,19 +158,7 @@ function newsFeed() {
 function newsDetail() {
   var id = location.hash.substr(1);
   var newsContent = getData(CONTENT_URL.replace('@id', id));
-  var title = document.createElement('h1');
   container.innerHTML = "\n        <h2>detail page</h2>\n        <h1>".concat(newsContent.title, "</h1>\n\n        <div>\n            <a href=\"#\">\uBAA9\uB85D\uC73C\uB85C</a>\n        </div>\n    ");
-}
-
-function router() {
-  var routePath = location.hash;
-
-  if (routePath === '') {
-    // home
-    newsFeed();
-  } else {
-    newsDetail();
-  }
 }
 
 window.addEventListener('hashchange', router);
