@@ -130,26 +130,42 @@ function getData(url) {
   return JSON.parse(ajax.response);
 }
 
-window.addEventListener('hashchange', function () {
+var ul = document.createElement('ul');
+
+function newsFeed() {
+  var newsFeed = getData(NEWS_URL); //데이터 가져오기
+
+  var newsList = [];
+  newsList.push('<ul>');
+
+  for (var i = 0; i < 10; i++) {
+    newsList.push("\n        <li>\n            <a href=\"#".concat(newsFeed[i].id, "\">\n            ").concat(newsFeed[i].title, " [").concat(newsFeed[i].comments_count, "</a>\n        </li>\n    "));
+  }
+
+  newsList.push('</ul>');
+  container.innerHTML = newsList.join(""); //구분자는 비워준다
+}
+
+function newsDetail() {
   var id = location.hash.substr(1);
   var newsContent = getData(CONTENT_URL.replace('@id', id));
   var title = document.createElement('h1');
-  title.innerHTML = newsContent.title;
-  content.appendChild(title);
-});
-var newsFeed = getData(NEWS_URL);
-var ul = document.createElement('ul');
-
-for (var i = 0; i < 10; i++) {
-  var div = document.createElement('div');
-  var li = document.createElement('li');
-  var a = document.createElement('a');
-  div.innerHTML = "\n        <li>\n            <a href=\"#".concat(newsFeed[i].id, "\">\n            ").concat(newsFeed[i].title, " [").concat(newsFeed[i].comments_count, "</a>\n        </li>\n    ");
-  ul.appendChild(div.firstElementChild);
+  container.innerHTML = "\n        <h2>detail page</h2>\n        <h1>".concat(newsContent.title, "</h1>\n\n        <div>\n            <a href=\"#\">\uBAA9\uB85D\uC73C\uB85C</a>\n        </div>\n    ");
 }
 
-container.appendChild(ul);
-container.appendChild(content);
+function router() {
+  var routePath = location.hash;
+
+  if (routePath === '') {
+    // home
+    newsFeed();
+  } else {
+    newsDetail();
+  }
+}
+
+window.addEventListener('hashchange', router);
+router();
 },{}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
