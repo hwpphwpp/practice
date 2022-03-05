@@ -123,6 +123,9 @@ var content = document.createElement('div');
 var ajax = new XMLHttpRequest();
 var NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
 var CONTENT_URL = 'https://api.hnpwa.com/v0/item/@id.json';
+var store = {
+  currentPage: 1
+};
 
 function router() {
   var routePath = location.hash;
@@ -152,6 +155,7 @@ function newsFeed() {
   }
 
   newsList.push('</ul>');
+  newsList.push("\n    <div>\n        <a href=\"#/page/".concat(store.currentPage - 1, "\">\uC774\uC804\uD398\uC774\uC9C0</a>\n        <a href=\"#/page/").concat(store.currentPage + 1, "\">\uB2E4\uC74C \uD398\uC774\uC9C0</a>\n    </div>\n"));
   container.innerHTML = newsList.join(""); //구분자는 비워준다
 }
 
@@ -191,7 +195,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54001" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53273" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
