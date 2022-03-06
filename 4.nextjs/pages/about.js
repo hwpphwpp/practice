@@ -3,8 +3,7 @@ import NavBar from "../components/NavBar";
 
 export default function Potato() {
   return (
-    <div>
-    <NavBar/>
+    <div> 
     <h1>Aboutus</h1> 
 </div>
   );
