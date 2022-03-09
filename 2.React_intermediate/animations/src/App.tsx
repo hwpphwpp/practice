@@ -7,32 +7,28 @@ function App(){
 
     const [width,setWidth]=useState(0);
 
-    const carousel=useRef<number>(0);
+    const carouself=useRef<HTMLDivElement>(null);
 
+    console.log(carouself);
     useEffect(()=>{ 
-        setWidth(carousel.current.scrollWidth-carousel.current.offsetWidth);
+        setWidth(carouself.current.scrollWidth-carouself.current.offsetWidth);
     }, []);
  
-    return(
-        <div className="BlogSection">
-
-
-           <motion.div ref={carousel}className="BlogSlide" whileTap={{cursor:"grabbing"}}>
-               <motion.div drag="x" 
+    return( 
+           <motion.div ref={carouself}className="carousel" whileTap={{cursor:"grabbing"}}>
+               <motion.div 
+               drag="x" 
                dragConstraints={{ right:0, left:-width}}
-               className="SlideCard">
+               className="inner-carousel">
                    {images.map(image=>{
                        return(
-                           <motion.div className="post" key={image}>
+                           <motion.div className="item" key={image}>
                                <img src={image} alt=""/>
                            </motion.div>
                        );
                    })}
                    </motion.div>
-            </motion.div>
-
-            
-        </div>
+            </motion.div> 
     );
 
 }
