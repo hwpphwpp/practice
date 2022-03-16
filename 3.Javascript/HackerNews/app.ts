@@ -11,7 +11,7 @@ type NewsFeed={
   time_ago:string;
   points:number;
   title:string;
-  read?:boolean;
+  read?:boolean; 
 }
 
 
@@ -24,7 +24,7 @@ const store:Store = {
   feeds: [],
 };
 
-function getData(url) {
+function getData(url;string) {
   ajax.open('GET', url, false);
   ajax.send();
 
