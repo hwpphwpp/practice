@@ -14,6 +14,16 @@ type NewsFeed={
   read?:boolean; 
 }
 
+type NewsDetail={
+  id:number;
+  time_ago:string;
+  title:string;
+  url:string;
+  user:string;
+  content:string;
+  comments:[];
+}
+
 
 const container: HTMLElement | null = document.getElementById('root');
 const ajax: XMLHttpRequest= new XMLHttpRequest();
@@ -24,7 +34,7 @@ const store:Store = {
   feeds: [],
 };
 
-function getData(url;string) {
+function getData(url:string) {
   ajax.open('GET', url, false);
   ajax.send();
 
