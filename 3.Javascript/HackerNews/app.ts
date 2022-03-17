@@ -3,17 +3,7 @@ type Store={
   feeds:NewsFeed[];
 }
 
-type NewsFeed={
-  id:number;
-  comments_count:number;
-  url:string;
-  user:string;
-  time_ago:string;
-  points:number;
-  title:string;
-  read?:boolean; 
-}
-
+ 
 type NewsDetail={
   id:number;
   time_ago:string;
@@ -22,6 +12,15 @@ type NewsDetail={
   user:string;
   content:string;
   comments:[];
+}
+
+type NewsComment={
+  id:number;
+  user:string;
+  time_ago:string;
+  content:string;
+  comments:[];
+  level:number;
 }
 
 
