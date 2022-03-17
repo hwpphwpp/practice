@@ -1,4 +1,4 @@
-type Store={
+interface Store{
   currentPage:number;
   feeds:NewsFeed[];
 }
