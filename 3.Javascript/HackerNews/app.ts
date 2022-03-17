@@ -1,6 +1,7 @@
 interface Store{
   currentPage:number;
   feeds:NewsFeed[];
+  
 }
 
 type News={
