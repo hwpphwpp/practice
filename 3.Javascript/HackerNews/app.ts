@@ -38,12 +38,37 @@ const store:Store = {
   feeds: [],
 };
 
-function getData<AjaxResponse>(url:string) : AjaxResponse {
-  ajax.open('GET', url, false);
-  ajax.send();
+class Api{
+  url:string; //받은 속성을 내부에 저장
+  ajax: XMLHttpRequest; //내부속성(모든 APi호출에 필요)
+  constructor(url:string){ //외부로부터 데이터를 받음
+    //생성자 내부에서 초기화
+    //인스턴스 객체에 접근하는 지시어 this
+    this.url=url;
+    this.ajax=new XMLHttpRequest();
+  }
 
-  return JSON.parse(ajax.response);
+  getRequest<AjaxResponse>():AjaxResponse{
+    this.ajax.open('GET', this.url, false);
+    this.ajax.send();
+  
+    return JSON.parse(ajax.response);
+  }
 }
+class NewsFeedApi extends Api{
+  getData():NewsFeed[]{//실제로 데이터를 가져옴. 반환값은 newsFeed의 []
+   //getRequest함수를 호출해서 값만 얻어오면됨
+   return this.getRequest<NewsFeed[]>();
+  }  
+}
+
+class NewsDetailApi extends Api{
+  getData():NewsDetail{//실제로 데이터를 가져옴. 반환값은 newsFeed의 []
+   return this.getRequest<NewsDetail>();
+  }  
+}
+
+ 
 
 function makeFeeds(feeds:NewsFeed[]):NewsFeed[] {
   for (let i = 0; i < feeds.length; i++) {
