@@ -87,7 +87,7 @@ interface NewsDetailApi extends Api {};
   const api=new NewsFeedApi();
 
   let newsFeed:NewsFeed[] = store.feeds;
-  const newsList = [];
+ 
   let template = `
     <div class="bg-gray-600 min-h-screen">
       <div class="bg-white text-xl">
@@ -126,7 +126,7 @@ interface NewsDetailApi extends Api {};
    }
 
    render():void{
-    
+    const newsList = [];
   for(let i = (store.currentPage - 1) * 10; i < store.currentPage * 10; i++) {
     newsList.push(`
       <div class="p-6 ${newsFeed[i].read ? 'bg-red-500' : 'bg-white'} mt-6 rounded-lg shadow-md transition-colors duration-500 hover:bg-green-100">
@@ -153,7 +153,7 @@ interface NewsDetailApi extends Api {};
  }
 
 
-function makeFeeds(feeds:NewsFeed[]):NewsFeed[] {
+ makeFeeds(feeds:NewsFeed[]):NewsFeed[] {
   for (let i = 0; i < feeds.length; i++) {
     feeds[i].read = false;
   }
@@ -161,6 +161,73 @@ function makeFeeds(feeds:NewsFeed[]):NewsFeed[] {
   return feeds;
 }
 
+class NewsDetailView {
+  constructor(){
+    const id = location.hash.substr(7);
+  const api=new NewsDetailApi();
+  const newsContent = api.getData(id);
+  let template = `
+    <div class="bg-gray-600 min-h-screen pb-8">
+      <div class="bg-white text-xl">
+        <div class="mx-auto px-4">
+          <div class="flex justify-between items-center py-6">
+            <div class="flex justify-start">
+              <h1 class="font-extrabold">Hacker News</h1>
+            </div>
+            <div class="items-center justify-end">
+              <a href="#/page/${store.currentPage}" class="text-gray-500">
+                <i class="fa fa-times"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-full border rounded-xl bg-white m-6 p-4 ">
+        <h2>${newsContent.title}</h2>
+        <div class="text-gray-400 h-20">
+          ${newsContent.content}
+        </div>
+
+        {{__comments__}}
+
+      </div>
+    </div>
+  `;
+
+  for(let i=0; i < store.feeds.length; i++) {
+    if (store.feeds[i].id === Number(id)) {
+      store.feeds[i].read = true;
+      break;
+    }
+  }
+  updateView(template.replace('{{__comments__}}', makeComment(newsContent.comments)));
+ }
+
+ function makeComment(comments:NewsComment[]) :string {
+  const commentString = [];
+  
+  for(let i = 0; i < comments.length; i++) {
+    const comment:NewsComment=comments[i];
+    
+    commentString.push(`
+      <div style="padding-left: ${comment.level * 40}px;" class="mt-4">
+        <div class="text-gray-400">
+          <i class="fa fa-sort-up mr-2"></i>
+          <strong>${comment.user}</strong> ${comment.time_ago}
+        </div>
+        <p class="text-gray-700">${comment.content}</p>
+      </div>      
+    `);
+
+    if (comments[i].comments.length > 0) {
+      commentString.push(makeComment(comments[i].comments));
+    }
+  }
+
+  return commentString.join('');
+  }
+}
 function updateView(html:string):void{ 
   if(container!=null){
     container.innerHTML = html;
